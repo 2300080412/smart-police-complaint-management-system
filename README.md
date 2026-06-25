@@ -55,37 +55,37 @@ smart-police-complaint-management-system
 
 ### 🏠 Home Page
 
-(Add image here)
+![Home](screenshots/home.png)
 
 ---
 
 ### 📝 Register Complaint
+![Register](screenshots/register.png)
 
-(Add image here)
 
 ---
 
 ### 🔍 Track Complaint
 
-(Add image here)
+![Track](screenshots/track.png)
 
 ---
 
 ### 📋 All Complaints
 
-(Add image here)
+![Complaints](screenshots/complaints.png)
 
 ---
 
 ### 🚨 Emergency Contacts
 
-(Add image here)
+![Emergency](screenshots/emergency.png)
 
 ---
 
 ### 👮 Admin Dashboard
 
-(Add image here)
+![Admin](screenshots/admin.png)
 
 ---
 
