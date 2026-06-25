@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Registered — AP Police</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628; color: #e2e8f0;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    .ap-nav {
+      background: rgba(5,13,26,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ap-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: #60a5fa;
+      text-decoration: none;
+    }
+    .ap-nav .nav-links { display: flex; gap: 0.35rem; }
+    .ap-nav .nav-links a {
+      color: #94a3b8; text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.38rem 0.85rem; border-radius: 6px;
+      border: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .ap-nav .nav-links a:hover {
+      color: #60a5fa; border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.1);
+    }
+
+    .page-content {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .success-card {
+      background: linear-gradient(135deg,#0f1f3d,#0d1b36);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 20px; padding: 3rem 2.5rem;
+      text-align: center; max-width: 480px; width: 100%;
+      box-shadow: 0 0 60px rgba(16,185,129,0.06), 0 12px 50px rgba(0,0,0,0.5);
+      animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .success-icon {
+      width: 76px; height: 76px;
+      background: rgba(16,185,129,0.1);
+      border: 2px solid rgba(16,185,129,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin: 0 auto 1.5rem;
+      box-shadow: 0 0 36px rgba(16,185,129,0.18);
+    }
+
+    .success-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: #10b981; margin-bottom: 0.5rem;
+    }
+
+    .success-subtitle { color: #64748b; font-size: 0.88rem; margin-bottom: 2rem; }
+
+    .id-block {
+      background: rgba(5,13,26,0.8);
+      border: 1px dashed rgba(59,130,246,0.3);
+      border-radius: 12px; padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .id-block .id-label {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #475569; margin-bottom: 0.4rem;
+    }
+    .id-block .id-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.8rem; font-weight: 700;
+      color: #60a5fa; line-height: 1;
+    }
+    .id-block .id-hint {
+      font-size: 0.73rem; color: #475569; margin-top: 0.35rem;
+    }
+
+    .status-row {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245,158,11,0.6);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+    .status-text {
+      font-size: 0.82rem; font-weight: 600; color: #f59e0b;
+      letter-spacing: 0.03em;
+    }
+
+    .action-row {
+      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
+    }
+
+    .btn-ap {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.5rem; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all 0.2s ease;
+    }
+    .btn-ap-primary {
+      background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff;
+      box-shadow: 0 0 20px rgba(37,99,235,0.4);
+    }
+    .btn-ap-primary:hover { box-shadow: 0 0 30px rgba(59,130,246,0.55); transform: translateY(-2px); color: #fff; }
+    .btn-ap-ghost {
+      background: transparent; color: #94a3b8;
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+    .btn-ap-ghost:hover { color: #e2e8f0; border-color: rgba(148,163,184,0.45); background: rgba(255,255,255,0.04); }
+
+    .ap-footer {
+      background: rgba(5,13,26,0.95); border-top: 1px solid rgba(59,130,246,0.12);
+      text-align: center; padding: 1.2rem;
+      color: #475569; font-size: 0.75rem;
+    }
+    .ap-footer span { color: #60a5fa; }
+  </style>
+</head>
+<body>
+
+<nav class="ap-nav">
+  <a href="/" class="brand">🚔 AP Police CMS</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/register/">Register</a>
+    <a href="/track/">Track</a>
+    <a href="/complaints/">All Complaints</a>
+    <a href="/emergency/">Emergency</a>
+  </div>
+</nav>
+
+<div class="page-content">
+  <div class="success-card">
+
+    <div class="success-icon">✅</div>
+
+    <div class="success-title">Complaint Registered</div>
+    <div class="success-subtitle">Your report has been submitted and assigned to the relevant authority.</div>
+
+    <div class="id-block">
+      <div class="id-label">Your Complaint ID</div>
+      <div class="id-value">{{ complaint.id }}</div>
+      <div class="id-hint">Save this number to track your complaint status</div>
+    </div>
+
+    <div class="status-row">
+      <div class="status-dot"></div>
+      <span class="status-text">{{ complaint.status }}</span>
+    </div>
+
+    <div class="action-row">
+      <a href="/track/" class="btn-ap btn-ap-ghost">🔍 Track Status</a>
+      <a href="/" class="btn-ap btn-ap-primary">← Go Home</a>
+    </div>
+
+  </div>
+</div>
+
+<footer class="ap-footer">
+  © 2026 <span>AP Police Complaint Management System</span>
+</footer>
+
+</body>
+</html>

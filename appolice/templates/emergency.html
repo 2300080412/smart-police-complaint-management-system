@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Contacts — AP Police</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628; color: #e2e8f0; min-height: 100vh;
+    }
+
+    .ap-nav {
+      background: rgba(5,13,26,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .ap-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: #60a5fa;
+      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .ap-nav .nav-links { display: flex; gap: 0.35rem; }
+    .ap-nav .nav-links a {
+      color: #94a3b8; text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.38rem 0.85rem; border-radius: 6px;
+      border: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .ap-nav .nav-links a:hover,
+    .ap-nav .nav-links a.active {
+      color: #60a5fa; border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.1);
+    }
+
+    .page-wrapper { max-width: 700px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    .page-header { margin-bottom: 2rem; }
+    .page-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #f43f5e; margin-bottom: 0.35rem;
+    }
+    .page-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700; color: #e2e8f0;
+    }
+    .page-header p { color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; }
+
+    /* ALERT BANNER */
+    .alert-banner {
+      background: rgba(244,63,94,0.08);
+      border: 1px solid rgba(244,63,94,0.22);
+      border-radius: 12px; padding: 1rem 1.2rem;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      margin-bottom: 2rem;
+      font-size: 0.83rem; color: #fda4af; line-height: 1.5;
+    }
+    .alert-banner .alert-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* EMERGENCY CARDS */
+    .emergency-grid { display: flex; flex-direction: column; gap: 0.9rem; }
+
+    .emergency-card {
+      background: linear-gradient(135deg,#0f1f3d,#0d1b36);
+      border: 1px solid rgba(244,63,94,0.18);
+      border-radius: 14px; padding: 1.4rem 1.6rem;
+      display: flex; align-items: center; gap: 1.3rem;
+      transition: all 0.25s ease; text-decoration: none;
+      color: inherit; cursor: pointer;
+    }
+    .emergency-card:hover {
+      border-color: rgba(244,63,94,0.45);
+      box-shadow: 0 0 30px rgba(244,63,94,0.1);
+      transform: translateX(5px);
+    }
+    .emergency-card.police  { border-color: rgba(59,130,246,0.2); }
+    .emergency-card.police:hover  { border-color: rgba(59,130,246,0.5); box-shadow: 0 0 30px rgba(59,130,246,0.1); }
+    .emergency-card.women   { border-color: rgba(168,85,247,0.2); }
+    .emergency-card.women:hover   { border-color: rgba(168,85,247,0.5); box-shadow: 0 0 30px rgba(168,85,247,0.1); }
+    .emergency-card.ambulance { border-color: rgba(16,185,129,0.2); }
+    .emergency-card.ambulance:hover { border-color: rgba(16,185,129,0.5); box-shadow: 0 0 30px rgba(16,185,129,0.1); }
+    .emergency-card.fire  { border-color: rgba(249,115,22,0.2); }
+    .emergency-card.fire:hover  { border-color: rgba(249,115,22,0.5); box-shadow: 0 0 30px rgba(249,115,22,0.1); }
+
+    .ec-icon-wrap {
+      width: 58px; height: 58px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; flex-shrink: 0;
+    }
+    .ec-icon-wrap.police   { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); }
+    .ec-icon-wrap.women    { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); }
+    .ec-icon-wrap.ambulance { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); }
+    .ec-icon-wrap.fire     { background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); }
+
+    .ec-content { flex: 1; }
+    .ec-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #64748b; margin-bottom: 0.2rem;
+    }
+    .ec-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem; font-weight: 700; color: #e2e8f0;
+      margin-bottom: 0.15rem;
+    }
+    .ec-desc { font-size: 0.78rem; color: #475569; }
+
+    .ec-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem; font-weight: 700; line-height: 1;
+      flex-shrink: 0;
+    }
+    .ec-number.police   { color: #60a5fa; }
+    .ec-number.women    { color: #c084fc; }
+    .ec-number.ambulance { color: #34d399; }
+    .ec-number.fire     { color: #fb923c; }
+
+    .btn-ap {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.3rem; border-radius: 8px;
+      font-size: 0.83rem; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all 0.2s ease;
+    }
+    .btn-ap-ghost {
+      background: transparent; color: #94a3b8;
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+    .btn-ap-ghost:hover { color: #e2e8f0; border-color: rgba(148,163,184,0.45); background: rgba(255,255,255,0.04); }
+
+    .ap-footer {
+      background: rgba(5,13,26,0.95); border-top: 1px solid rgba(59,130,246,0.12);
+      text-align: center; padding: 1.2rem;
+      color: #475569; font-size: 0.75rem; margin-top: 2rem;
+    }
+    .ap-footer span { color: #60a5fa; }
+  </style>
+</head>
+<body>
+
+<nav class="ap-nav">
+  <a href="/" class="brand">🚔 AP Police CMS</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/register/">Register</a>
+    <a href="/track/">Track</a>
+    <a href="/complaints/">All Complaints</a>
+    <a href="/emergency/" class="active">Emergency</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <div class="eyebrow">🚨 Immediate Help</div>
+    <h2>Emergency Contacts</h2>
+    <p>Tap any card to call directly. Available 24 × 7.</p>
+  </div>
+
+  <div class="alert-banner">
+    <span class="alert-icon">⚠️</span>
+    <span>If you are in immediate danger, call the relevant number below. These lines are active 24 hours a day, 7 days a week.</span>
+  </div>
+
+  <div class="emergency-grid">
+
+    <a href="tel:100" class="emergency-card police">
+      <div class="ec-icon-wrap police">🚓</div>
+      <div class="ec-content">
+        <div class="ec-label">Law Enforcement</div>
+        <div class="ec-name">Police Control Room</div>
+        <div class="ec-desc">Report crime, accidents & law-and-order issues</div>
+      </div>
+      <div class="ec-number police">100</div>
+    </a>
+
+    <a href="tel:181" class="emergency-card women">
+      <div class="ec-icon-wrap women">👩‍⚖️</div>
+      <div class="ec-content">
+        <div class="ec-label">Women's Safety</div>
+        <div class="ec-name">Women Helpline</div>
+        <div class="ec-desc">Harassment, domestic violence & women in distress</div>
+      </div>
+      <div class="ec-number women">181</div>
+    </a>
+
+    <a href="tel:108" class="emergency-card ambulance">
+      <div class="ec-icon-wrap ambulance">🚑</div>
+      <div class="ec-content">
+        <div class="ec-label">Medical Emergency</div>
+        <div class="ec-name">Ambulance</div>
+        <div class="ec-desc">Medical emergencies, accidents & health crises</div>
+      </div>
+      <div class="ec-number ambulance">108</div>
+    </a>
+
+    <a href="tel:101" class="emergency-card fire">
+      <div class="ec-icon-wrap fire">🔥</div>
+      <div class="ec-content">
+        <div class="ec-label">Fire & Rescue</div>
+        <div class="ec-name">Fire Service</div>
+        <div class="ec-desc">Fire, gas leaks, structural collapse & rescue ops</div>
+      </div>
+      <div class="ec-number fire">101</div>
+    </a>
+
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <a href="/" class="btn-ap btn-ap-ghost">← Back to Home</a>
+  </div>
+
+</div>
+
+<footer class="ap-footer">
+  © 2026 <span>AP Police Complaint Management System</span>
+</footer>
+
+</body>
+</html>

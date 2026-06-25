@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Complaints — AP Police</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628;
+      color: #e2e8f0; min-height: 100vh;
+    }
+
+    .ap-nav {
+      background: rgba(5,13,26,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .ap-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: #60a5fa;
+      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .ap-nav .nav-links { display: flex; gap: 0.35rem; }
+    .ap-nav .nav-links a {
+      color: #94a3b8; text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.38rem 0.85rem; border-radius: 6px;
+      border: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .ap-nav .nav-links a:hover,
+    .ap-nav .nav-links a.active {
+      color: #60a5fa; border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.1);
+    }
+
+    .page-wrapper { max-width: 1060px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    .page-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 1.8rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .page-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #3b82f6; margin-bottom: 0.3rem;
+    }
+    .page-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700; color: #e2e8f0;
+    }
+
+    .table-card {
+      background: linear-gradient(135deg,#0f1f3d,#0d1b36);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    .ap-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+
+    .ap-table thead tr {
+      background: rgba(22,40,80,0.7);
+      border-bottom: 1px solid rgba(59,130,246,0.2);
+    }
+    .ap-table th {
+      padding: 1rem 1.2rem; text-align: left;
+      font-size: 0.69rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #60a5fa;
+    }
+    .ap-table td {
+      padding: 0.95rem 1.2rem;
+      border-bottom: 1px solid rgba(59,130,246,0.06);
+      color: #cbd5e1; vertical-align: middle;
+    }
+    .ap-table tbody tr { transition: background 0.15s; }
+    .ap-table tbody tr:hover { background: rgba(59,130,246,0.04); }
+    .ap-table tbody tr:last-child td { border-bottom: none; }
+
+    .id-cell {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 700;
+      color: #94a3b8;
+    }
+    .id-cell::before { content: '#'; opacity: 0.5; }
+
+    .name-cell { font-weight: 600; color: #e2e8f0; }
+    .mobile-cell { font-size: 0.83rem; color: #64748b; }
+    .type-cell {
+      display: inline-block;
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.18);
+      border-radius: 5px; padding: 0.25rem 0.65rem;
+      font-size: 0.76rem; font-weight: 600; color: #7dd3fc;
+    }
+
+    .badge-ap {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.3rem 0.75rem; border-radius: 20px;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .badge-resolved {
+      background: rgba(16,185,129,0.12); color: #10b981;
+      border: 1px solid rgba(16,185,129,0.28);
+    }
+    .badge-pending, .badge-submitted {
+      background: rgba(245,158,11,0.1); color: #f59e0b;
+      border: 1px solid rgba(245,158,11,0.28);
+    }
+
+    .table-footer {
+      padding: 1rem 1.2rem;
+      border-top: 1px solid rgba(59,130,246,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; color: #475569;
+    }
+
+    .btn-ap {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.3rem; border-radius: 8px;
+      font-size: 0.83rem; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all 0.2s ease;
+    }
+    .btn-ap-primary {
+      background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff;
+      box-shadow: 0 0 16px rgba(37,99,235,0.35);
+    }
+    .btn-ap-primary:hover { box-shadow: 0 0 28px rgba(59,130,246,0.5); transform: translateY(-1px); color: #fff; }
+    .btn-ap-ghost {
+      background: transparent; color: #94a3b8;
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+    .btn-ap-ghost:hover { color: #e2e8f0; border-color: rgba(148,163,184,0.45); background: rgba(255,255,255,0.04); }
+
+    .ap-footer {
+      background: rgba(5,13,26,0.95); border-top: 1px solid rgba(59,130,246,0.12);
+      text-align: center; padding: 1.2rem;
+      color: #475569; font-size: 0.75rem; margin-top: 2rem;
+    }
+    .ap-footer span { color: #60a5fa; }
+  </style>
+</head>
+<body>
+
+<nav class="ap-nav">
+  <a href="/" class="brand">🚔 AP Police CMS</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/register/">Register</a>
+    <a href="/track/">Track</a>
+    <a href="/complaints/" class="active">All Complaints</a>
+    <a href="/emergency/">Emergency</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <div>
+      <div class="eyebrow">Records</div>
+      <h2>All Complaints</h2>
+    </div>
+    <a href="/register/" class="btn-ap btn-ap-primary">+ New Complaint</a>
+  </div>
+
+  <div class="table-card">
+    <table class="ap-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+<th>Name</th>
+<th>Mobile</th>
+<th>Type</th>
+<th>Date</th>
+<th>Evidence</th>
+<th>Location</th>
+<th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for complaint in complaints %}
+        <tr>
+          <td><span class="id-cell">{{ complaint.id }}</span></td>
+          <td><span class="name-cell">{{ complaint.name }}</span></td>
+          <td><span class="mobile-cell">{{ complaint.mobile }}</span></td>
+          <td><span class="type-cell">{{ complaint.complaint_type }}</span></td>
+          <td>{{ complaint.created_at|date:"d M Y H:i" }}</td>
+          
+
+<td>
+    {% if complaint.image %}
+        <a href="{{ complaint.image.url }}" target="_blank">
+    <img src="{{ complaint.image.url }}"
+         width="60"
+         height="60"
+         style="border-radius:8px; object-fit:cover;">
+</a>
+    {% else %}
+        No Image
+    {% endif %}
+</td>
+
+<td>
+    {% if complaint.latitude and complaint.longitude %}
+        <a href="https://www.google.com/maps?q={{ complaint.latitude }},{{ complaint.longitude }}"
+           target="_blank"
+           class="btn-ap btn-ap-primary">
+           📍 Open Map
+        </a>
+    {% else %}
+        No Location
+    {% endif %}
+</td>
+
+<td>
+            {% if complaint.status|lower == "resolved" %}
+              <span class="badge-ap badge-resolved">✓ Resolved</span>
+            {% else %}
+              <span class="badge-ap badge-pending">⏳ {{ complaint.status }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="table-footer">
+      <span>Showing all records</span>
+      <a href="/" class="btn-ap btn-ap-ghost">← Home</a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="ap-footer">
+  © 2026 <span>AP Police Complaint Management System</span>
+</footer>
+
+</body>
+</html>

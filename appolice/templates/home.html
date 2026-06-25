@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Police — Complaint Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== DESIGN SYSTEM ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628;
+      color: #e2e8f0;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* NAVBAR */
+    .ap-nav {
+      background: rgba(5,13,26,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .ap-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #60a5fa;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.55rem;
+    }
+    .ap-nav .brand span.badge-live {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em;
+      background: rgba(244,63,94,0.15); color: #f43f5e;
+      border: 1px solid rgba(244,63,94,0.3);
+      border-radius: 4px; padding: 0.15rem 0.45rem; text-transform: uppercase;
+    }
+    .ap-nav .nav-links { display: flex; gap: 0.35rem; }
+    .ap-nav .nav-links a {
+      color: #94a3b8; text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.38rem 0.85rem; border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .ap-nav .nav-links a:hover {
+      color: #e2e8f0;
+      border-color: rgba(59,130,246,0.35);
+      background: rgba(59,130,246,0.08);
+    }
+    .ap-nav .nav-links a.active {
+      color: #60a5fa;
+      border-color: rgba(59,130,246,0.5);
+      background: rgba(59,130,246,0.12);
+    }
+
+    /* PAGE */
+    .page-wrapper {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* HERO */
+    .hero-strip {
+      background: linear-gradient(135deg, #0f1f3d 0%, #060f20 60%);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 18px;
+      padding: 3.2rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2.2rem;
+    }
+    .hero-strip::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 250px;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.11), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-strip .eyebrow {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: #3b82f6; margin-bottom: 0.75rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .hero-strip .eyebrow::before,
+    .hero-strip .eyebrow::after {
+      content: ''; flex: 1; max-width: 60px;
+      height: 1px; background: rgba(59,130,246,0.3);
+    }
+    .hero-strip h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.1rem; font-weight: 700;
+      color: #e2e8f0; margin-bottom: 0.7rem;
+      letter-spacing: -0.01em;
+    }
+    .hero-strip p {
+      color: #94a3b8; font-size: 0.95rem;
+      max-width: 460px; margin: 0 auto 2rem;
+    }
+    .action-row {
+      display: flex; gap: 0.75rem;
+      justify-content: center; flex-wrap: wrap;
+    }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem; margin-bottom: 2.2rem;
+    }
+    .stat-card {
+      border-radius: 14px; padding: 1.8rem 1.6rem;
+      position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(255,255,255,0.08), transparent 65%);
+      pointer-events: none;
+    }
+    .stat-card .icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
+    .stat-card .label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      opacity: 0.7; margin-bottom: 0.4rem;
+    }
+    .stat-card .value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.2rem; font-weight: 700; line-height: 1;
+    }
+    .stat-card.blue  { background: linear-gradient(135deg,#1e3a8a,#1d4ed8); border: 1px solid rgba(96,165,250,0.2); }
+    .stat-card.amber { background: linear-gradient(135deg,#78350f,#d97706); border: 1px solid rgba(245,158,11,0.2); }
+    .stat-card.green { background: linear-gradient(135deg,#064e3b,#059669); border: 1px solid rgba(16,185,129,0.2); }
+
+    /* BUTTONS */
+    .btn-ap {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.5rem; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 0.02em; text-decoration: none;
+      border: none; cursor: pointer;
+      transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+    }
+    .btn-ap-primary {
+      background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff;
+      box-shadow: 0 0 20px rgba(37,99,235,0.35);
+    }
+    .btn-ap-primary:hover { box-shadow: 0 0 30px rgba(59,130,246,0.55); transform: translateY(-2px); color:#fff; }
+    .btn-ap-success {
+      background: linear-gradient(135deg,#059669,#047857); color: #fff;
+      box-shadow: 0 0 20px rgba(5,150,105,0.3);
+    }
+    .btn-ap-success:hover { box-shadow: 0 0 30px rgba(16,185,129,0.45); transform: translateY(-2px); color:#fff; }
+    .btn-ap-danger {
+      background: linear-gradient(135deg,#e11d48,#be123c); color: #fff;
+      box-shadow: 0 0 20px rgba(225,29,72,0.35);
+    }
+    .btn-ap-danger:hover { box-shadow: 0 0 30px rgba(244,63,94,0.5); transform: translateY(-2px); color:#fff; }
+    .btn-ap-ghost {
+      background: transparent; color: #94a3b8;
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+    .btn-ap-ghost:hover {
+      color: #e2e8f0;
+      border-color: rgba(148,163,184,0.5);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* QUICK LINKS */
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .quick-link-card {
+      background: linear-gradient(135deg,#0f1f3d,#0d1b36);
+      border: 1px solid rgba(59,130,246,0.13);
+      border-radius: 13px; padding: 1.5rem;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+    .quick-link-card:hover {
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 20px rgba(59,130,246,0.07);
+      transform: translateY(-3px);
+      color: inherit;
+    }
+    .quick-link-card .ql-icon { font-size: 1.6rem; }
+    .quick-link-card .ql-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: #e2e8f0;
+    }
+    .quick-link-card .ql-desc { font-size: 0.78rem; color: #64748b; }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #3b82f6; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(59,130,246,0.18);
+    }
+
+    /* FOOTER */
+    .ap-footer {
+      background: rgba(5,13,26,0.95);
+      border-top: 1px solid rgba(59,130,246,0.12);
+      text-align: center; padding: 1.3rem;
+      color: #475569; font-size: 0.75rem;
+      letter-spacing: 0.04em; margin-top: 2rem;
+    }
+    .ap-footer span { color: #60a5fa; }
+
+    @media (max-width: 640px) {
+      .stat-grid { grid-template-columns: 1fr; }
+      .hero-strip h1 { font-size: 1.6rem; }
+      .ap-nav { padding: 0.75rem 1rem; }
+      .page-wrapper { padding: 1.5rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="ap-nav">
+  <a href="/" class="brand">🚔 AP Police CMS <span class="badge-live">Live</span></a>
+  <div class="nav-links">
+    <a href="/" class="active">Home</a>
+    <a href="/register/">Register</a>
+    <a href="/track/">Track</a>
+    <a href="/complaints/">All Complaints</a>
+    <a href="/emergency/">Emergency</a>
+    <a href="/admin/">Admin</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <div class="hero-strip">
+    <div class="eyebrow">Andhra Pradesh Police</div>
+    <h1>🚔 Complaint Management System</h1>
+    <p>Submit incidents with evidence, track your complaint status, and access emergency services — all in one place.</p>
+    <div class="action-row">
+      <a href="/register/" class="btn-ap btn-ap-primary">📝 Register Complaint</a>
+      <a href="/track/" class="btn-ap btn-ap-success">🔍 Track Complaint</a>
+      <a href="/emergency/" class="btn-ap btn-ap-danger">🚨 Emergency</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="section-title">Overview</div>
+  <div class="stat-grid">
+    <div class="stat-card blue">
+      <div class="icon">📋</div>
+      <div class="label">Total Complaints</div>
+      <div class="value">{{ total }}</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="icon">⏳</div>
+      <div class="label">Submitted</div>
+      <div class="value">{{ submitted }}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="icon">✅</div>
+      <div class="label">Resolved</div>
+      <div class="value">{{ resolved }}</div>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="section-title">Quick Access</div>
+  <div class="quick-links">
+    <a href="/register/" class="quick-link-card">
+      <span class="ql-icon">📝</span>
+      <div class="ql-title">Register Complaint</div>
+      <div class="ql-desc">File a new incident report with evidence and location</div>
+    </a>
+    <a href="/track/" class="quick-link-card">
+      <span class="ql-icon">🔍</span>
+      <div class="ql-title">Track Status</div>
+      <div class="ql-desc">Enter your complaint ID to view current progress</div>
+    </a>
+    <a href="/complaints/" class="quick-link-card">
+      <span class="ql-icon">📂</span>
+      <div class="ql-title">All Complaints</div>
+      <div class="ql-desc">Browse and filter all registered complaints</div>
+    </a>
+    <a href="/emergency/" class="quick-link-card">
+      <span class="ql-icon">🚨</span>
+      <div class="ql-title">Emergency Contacts</div>
+      <div class="ql-desc">Instant access to police, ambulance and fire services</div>
+    </a>
+  </div>
+
+</div>
+
+<footer class="ap-footer">
+  © 2026 <span>AP Police Complaint Management System</span> — Serving & Protecting Andhra Pradesh
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Complaint — AP Police</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628; color: #e2e8f0; min-height: 100vh;
+    }
+
+    .ap-nav {
+      background: rgba(5,13,26,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .ap-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: #60a5fa;
+      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .ap-nav .nav-links { display: flex; gap: 0.35rem; }
+    .ap-nav .nav-links a {
+      color: #94a3b8; text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.38rem 0.85rem; border-radius: 6px;
+      border: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .ap-nav .nav-links a:hover,
+    .ap-nav .nav-links a.active {
+      color: #60a5fa; border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.1);
+    }
+
+    .page-wrapper { max-width: 600px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    .page-header { margin-bottom: 1.8rem; }
+    .page-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #3b82f6; margin-bottom: 0.35rem;
+    }
+    .page-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700; color: #e2e8f0;
+    }
+    .page-header p { color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; }
+
+    /* SEARCH CARD */
+    .search-card {
+      background: linear-gradient(135deg,#0f1f3d,#0d1b36);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 16px; padding: 2rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .search-label {
+      display: block; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #60a5fa; margin-bottom: 0.5rem;
+    }
+
+    .search-row { display: flex; gap: 0.75rem; }
+    .form-input {
+      flex: 1;
+      background: rgba(5,13,26,0.75);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      color: #e2e8f0; font-family: 'Inter', sans-serif;
+      font-size: 1rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input::placeholder { color: #334155; }
+    .form-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+
+    .btn-ap {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 1.5rem; border-radius: 8px;
+      font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all 0.2s ease;
+    }
+    .btn-ap-primary {
+      background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff;
+      box-shadow: 0 0 20px rgba(37,99,235,0.4); white-space: nowrap;
+    }
+    .btn-ap-primary:hover { box-shadow: 0 0 30px rgba(59,130,246,0.55); transform: translateY(-2px); color: #fff; }
+    .btn-ap-ghost {
+      background: transparent; color: #94a3b8;
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+    .btn-ap-ghost:hover { color: #e2e8f0; border-color: rgba(148,163,184,0.45); background: rgba(255,255,255,0.04); }
+
+    /* RESULT CARD */
+    .result-card {
+      background: linear-gradient(135deg,#0f1f3d,#0d1b36);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+
+    .result-header {
+      padding: 1.2rem 1.6rem;
+      border-bottom: 1px solid rgba(59,130,246,0.1);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .result-header .label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; color: #60a5fa;
+    }
+
+    .badge-ap {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .badge-resolved {
+      background: rgba(16,185,129,0.12); color: #10b981;
+      border: 1px solid rgba(16,185,129,0.28);
+    }
+    .badge-pending {
+      background: rgba(245,158,11,0.1); color: #f59e0b;
+      border: 1px solid rgba(245,158,11,0.28);
+    }
+
+    .result-body { padding: 1.5rem 1.6rem; }
+
+    .status-banner {
+      border-radius: 10px; padding: 0.9rem 1rem;
+      font-size: 0.85rem; font-weight: 600;
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 1.3rem;
+    }
+    .status-success {
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: #6ee7b7;
+    }
+    .status-warning {
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.25);
+      color: #fcd34d;
+    }
+
+    .info-rows { display: flex; flex-direction: column; gap: 0; }
+    .info-row {
+      display: flex; gap: 1rem; padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(59,130,246,0.07);
+      align-items: baseline;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-key {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #3b82f6; min-width: 140px; flex-shrink: 0;
+    }
+    .info-val { color: #cbd5e1; font-size: 0.9rem; }
+
+    .not-found {
+      text-align: center; padding: 2.5rem 1rem;
+      color: #475569;
+    }
+    .not-found .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .not-found p { font-size: 0.9rem; }
+
+    .ap-footer {
+      background: rgba(5,13,26,0.95); border-top: 1px solid rgba(59,130,246,0.12);
+      text-align: center; padding: 1.2rem;
+      color: #475569; font-size: 0.75rem; margin-top: 2rem;
+    }
+    .ap-footer span { color: #60a5fa; }
+  </style>
+</head>
+<body>
+
+<nav class="ap-nav">
+  <a href="/" class="brand">🚔 AP Police CMS</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/register/">Register</a>
+    <a href="/track/" class="active">Track</a>
+    <a href="/complaints/">All Complaints</a>
+    <a href="/emergency/">Emergency</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <div class="eyebrow">Status Check</div>
+    <h2>Track Your Complaint</h2>
+    <p>Enter your complaint ID to check the latest status update.</p>
+  </div>
+
+  <div class="search-card">
+    <form method="POST">
+      {% csrf_token %}
+      <label class="search-label">Complaint ID</label>
+      <div class="search-row">
+        <input type="number" name="complaint_id" class="form-input"
+               placeholder="e.g. 10042" required>
+        <button type="submit" class="btn-ap btn-ap-primary">🔍 Track</button>
+      </div>
+    </form>
+  </div>
+
+  {% if complaint %}
+  <div class="result-card">
+    <div class="result-header">
+      <span class="label">Complaint #{{ complaint.id }}</span>
+      {% if complaint.status|lower == "resolved" %}
+        <span class="badge-ap badge-resolved">✓ Resolved</span>
+      {% else %}
+        <span class="badge-ap badge-pending">⏳ {{ complaint.status }}</span>
+      {% endif %}
+    </div>
+
+    <div class="result-body">
+      {% if complaint.status|lower == "resolved" %}
+        <div class="status-banner status-success">
+          ✅ This complaint has been resolved by the authorities.
+        </div>
+      {% else %}
+        <div class="status-banner status-warning">
+          ⏳ Your complaint is currently under review. Please check back later.
+        </div>
+      {% endif %}
+
+      <div class="info-rows">
+        <div class="info-row">
+    <span class="info-key">Complaint ID</span>
+    <span class="info-val">#{{ complaint.id }}</span>
+  </div>
+        <div class="info-row">
+          <span class="info-key">Complaint</span>
+          <span class="info-val">{{ complaint.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Complaint Type</span>
+          <span class="info-val">{{ complaint.complaint_type }}</span>
+        </div>
+        {% if complaint.image %}
+<div class="info-row">
+  <span class="info-key">Evidence</span>
+  <span class="info-val">
+    <a href="{{ complaint.image.url }}" target="_blank">
+      <img src="{{ complaint.image.url }}"
+           width="120"
+           style="border-radius:10px;">
+    </a>
+  </span>
+</div>
+{% endif %}
+{% if complaint.latitude and complaint.longitude %}
+<div class="info-row">
+  <span class="info-key">Location</span>
+  <span class="info-val">
+    <a href="https://maps.google.com/?q={{ complaint.latitude }},{{ complaint.longitude }}"
+       target="_blank"
+       class="btn-ap btn-ap-primary">
+       📍 Open Map
+    </a>
+  </span>
+</div>
+{% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% elif request.method == "POST" %}
+  <div class="result-card">
+    <div class="not-found">
+      <div class="icon">🔎</div>
+      <p>No complaint found with that ID. Please check the number and try again.</p>
+    </div>
+  </div>
+  {% endif %}
+
+  
+
+  <div style="margin-top: 1.5rem;">
+    <a href="/" class="btn-ap btn-ap-ghost">← Back to Home</a>
+  </div>
+
+</div>
+
+<footer class="ap-footer">
+  © 2026 <span>AP Police Complaint Management System</span>
+</footer>
+
+</body>
+</html>

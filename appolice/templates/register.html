@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Complaint — AP Police</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    .ap-nav {
+      background: rgba(5,13,26,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(59,130,246,0.18);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .ap-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 700; color: #60a5fa;
+      text-decoration: none; display: flex; align-items: center; gap: 0.55rem;
+    }
+    .ap-nav .nav-links { display: flex; gap: 0.35rem; }
+    .ap-nav .nav-links a {
+      color: #94a3b8; text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.38rem 0.85rem; border-radius: 6px;
+      border: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .ap-nav .nav-links a:hover,
+    .ap-nav .nav-links a.active {
+      color: #60a5fa;
+      border-color: rgba(59,130,246,0.4);
+      background: rgba(59,130,246,0.1);
+    }
+
+    .page-wrapper {
+      max-width: 680px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .page-header {
+      margin-bottom: 1.8rem;
+    }
+    .page-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #3b82f6; margin-bottom: 0.4rem;
+    }
+    .page-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700;
+      color: #e2e8f0; letter-spacing: -0.01em;
+    }
+    .page-header p { color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; }
+
+    .form-card {
+      background: linear-gradient(135deg,#0f1f3d 0%,#0d1b36 100%);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 16px; padding: 2rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-label {
+      display: block; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #60a5fa; margin-bottom: 0.45rem;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: rgba(5,13,26,0.75);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 8px; padding: 0.72rem 1rem;
+      color: #e2e8f0; font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: #334155; }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+    .form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .form-select { appearance: none; cursor: pointer; }
+    .form-select option { background: #0f1f3d; }
+
+    .divider {
+      border: none; border-top: 1px solid rgba(59,130,246,0.1);
+      margin: 1.5rem 0;
+    }
+
+    .section-label {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #475569; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(59,130,246,0.1);
+    }
+
+    .submit-row {
+      display: flex; align-items: center; gap: 1rem;
+      justify-content: space-between; margin-top: 1.5rem;
+    }
+    .submit-note { font-size: 0.75rem; color: #475569; }
+
+    .btn-ap {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 1.8rem; border-radius: 8px;
+      font-size: 0.88rem; font-weight: 600;
+      letter-spacing: 0.02em; text-decoration: none;
+      border: none; cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+    }
+    .btn-ap-primary {
+      background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff;
+      box-shadow: 0 0 20px rgba(37,99,235,0.4);
+    }
+    .btn-ap-primary:hover {
+      box-shadow: 0 0 32px rgba(59,130,246,0.55);
+      transform: translateY(-2px); color: #fff;
+    }
+    .btn-ap-ghost {
+      background: transparent; color: #94a3b8;
+      border: 1px solid rgba(148,163,184,0.25);
+      text-decoration: none;
+    }
+    .btn-ap-ghost:hover {
+      color: #e2e8f0; border-color: rgba(148,163,184,0.45);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .info-banner {
+      background: rgba(59,130,246,0.07);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 10px; padding: 0.85rem 1rem;
+      font-size: 0.8rem; color: #7dd3fc;
+      display: flex; gap: 0.6rem; align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+
+    .ap-footer {
+      background: rgba(5,13,26,0.95);
+      border-top: 1px solid rgba(59,130,246,0.12);
+      text-align: center; padding: 1.2rem;
+      color: #475569; font-size: 0.75rem;
+      letter-spacing: 0.04em; margin-top: 2rem;
+    }
+    .ap-footer span { color: #60a5fa; }
+  </style>
+</head>
+<body>
+
+<nav class="ap-nav">
+  <a href="/" class="brand">🚔 AP Police CMS</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/register/" class="active">Register</a>
+    <a href="/track/">Track</a>
+    <a href="/complaints/">All Complaints</a>
+    <a href="/emergency/">Emergency</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <div class="eyebrow">New Report</div>
+    <h2>Register a Complaint</h2>
+    <p>All details are encrypted and forwarded directly to the concerned authority.</p>
+  </div>
+
+  <div class="info-banner">
+    <span>ℹ️</span>
+    <span>Provide accurate details to help authorities respond faster. Your complaint ID will be generated upon submission.</span>
+  </div>
+
+  <div class="form-card">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="section-label">Personal Information</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input
+    type="text"
+    class="form-input"
+    name="name"
+    placeholder="Your full name"
+    pattern="[A-Za-z ]+"
+    required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <input
+    type="tel"
+    class="form-input"
+    name="mobile"
+    placeholder="9876543210"
+    pattern="[0-9]{10}"
+    maxlength="10"
+    minlength="10"
+    required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Address / Location</label>
+        <textarea class="form-textarea" name="address" placeholder="Incident location or your address..." rows="2"></textarea>
+      </div>
+
+      <button type="button" class="btn-ap btn-ap-ghost" onclick="getLocation()">
+    📍 Use My Current Location
+</button>
+
+      <input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
+
+      <div class="divider"></div>
+      <div class="section-label">Incident Details</div>
+
+      <div class="form-group">
+    <label class="form-label">Complaint Type</label>
+
+    <select class="form-select" name="complaint_type" required>
+        <option value="">Select Complaint Type</option>
+        <option value="Theft">Theft</option>
+        <option value="Accident">Accident</option>
+        <option value="Harassment">Harassment</option>
+        <option value="Cyber Crime">Cyber Crime</option>
+        <option value="Missing Person">Missing Person</option>
+        <option value="Traffic Violation">Traffic Violation</option>
+        <option value="Domestic Violence">Domestic Violence</option>
+        <option value="Other">Other</option>
+    </select>
+</div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" name="description" rows="4"
+          placeholder="Describe the incident in detail — time, location, people involved, any witnesses…"></textarea>
+      </div>
+      <div class="form-group">
+    <label class="form-label">Upload Evidence Photo</label>
+
+    
+
+        <input
+    type="file"
+    class="form-input"
+    name="image"
+    accept="image/*"
+    capture="environment">
+</div>
+
+      <div class="divider"></div>
+
+      <div class="submit-row">
+        <a href="/" class="btn-ap btn-ap-ghost">← Back</a>
+        <button type="submit" class="btn-ap btn-ap-primary">Submit Complaint →</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<footer class="ap-footer">
+  © 2026 <span>AP Police Complaint Management System</span>
+</footer>
+
+<script>
+function getLocation() {
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+
+                document.getElementById("latitude").value =
+                    position.coords.latitude;
+
+                document.getElementById("longitude").value =
+                    position.coords.longitude;
+
+                alert("Location captured successfully!");
+
+            },
+
+            function() {
+                alert("Unable to get location.");
+            }
+        );
+
+    } else {
+        alert("Geolocation is not supported.");
+    }
+}
+</script>
+
+</body>
+</html>
